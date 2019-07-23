@@ -5,8 +5,10 @@ export function getUrlFragment(path = null) {
 
     fragment = clearUrlSlashes(decodeURI(path));
     fragment = fragment.replace(/\?(.*)$/, '');
+    fragment = fragment === '' ? '/' : fragment;
+    console.log(fragment);
 
-    return clearUrlSlashes(fragment);
+    return fragment;
 }
 
 /**
@@ -16,9 +18,13 @@ export function getUrlFragment(path = null) {
  * @returns {string}
  */
 export function clearUrlSlashes(path) {
-    return path.toString().replace(/\/$/, '');
+    return path !== '/' ? path.toString().replace(/\/$/, '') : path;
 }
 
+/**
+ *
+ * @returns {string}
+ */
 export function getLocationSearchWithoutQuestionMark() {
     return location.search.replace('?', '');
 }

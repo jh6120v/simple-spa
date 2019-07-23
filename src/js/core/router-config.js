@@ -1,3 +1,3 @@
 export const routes = [
-    {path: '/', component: 'home'}
+    {path: '/', component: 'home/home'}
 ];

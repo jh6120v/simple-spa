@@ -95,6 +95,7 @@ class Router {
 
     execute(path, referrer = null) {
         let _this = this;
+        console.log(_this.routes.get(path).component);
 
         import(`../component/${_this.routes.get(path).component}`).then(async component => {
             if (referrer !== null) {

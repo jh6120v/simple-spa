@@ -3,13 +3,14 @@ const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin');
 
 console.log(__dirname);
 
 module.exports = {
-    entry: [
-        './src/app.js'
-    ],
+    entry: {
+        'b': path.join(__dirname, 'src', 'app')
+    },
     output: {
         path: `${__dirname}/dist`,
         filename: `assets/js/bundle.[hash].js`,
@@ -95,7 +96,8 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: `${__dirname}/index.html`,
             filename: `index.html`,
-            inject: 'body'
+            inject: 'body',
+            chunksSortMode: 'none'
         }),
         new MiniCssExtractPlugin({
             filename: "assets/css/[chunkhash].css",
