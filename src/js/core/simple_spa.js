@@ -61,7 +61,7 @@ export class SimpleSpa {
             throw new Error('component not set.');
         }
 
-        let component = await import(`../component/${_this.wrapper}`);
+        let component = await import(`../components/${_this.wrapper}`);
         const App = await new component.default();
 
         App.scope = await _this.$el;

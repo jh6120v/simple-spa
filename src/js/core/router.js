@@ -97,7 +97,7 @@ class Router {
         let _this = this;
         console.log(_this.routes.get(path).component);
 
-        import(`../component/${_this.routes.get(path).component}`).then(async component => {
+        import(`../components/${_this.routes.get(path).component}`).then(async component => {
             if (referrer !== null) {
                 _this.referrer_url = referrer;
             }
@@ -114,7 +114,7 @@ class Router {
 }
 
 export function navigate(path) {
-    window.history.replaceState(path, null, clearUrlSlashes(path));
+    window.history.pushState(path, null, clearUrlSlashes(path));
 }
 
 export const router = new Router({

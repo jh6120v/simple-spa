@@ -48,7 +48,7 @@ export default class Component {
             });
 
             // process component template
-            _this.compiledTemplate = await import(`../template/${_this.template}.ejs`);
+            _this.compiledTemplate = await import(`../templates/${_this.template}.ejs`);
             _this.output = await _this.compiledTemplate.default(_this.data);
 
             if (_this.auto_render && _this.scope) {
@@ -140,7 +140,7 @@ export const appendComponent = async (componentConfig) => {
                     store: store
                 });
 
-                let tpl = await import(`../component/${value.path}`);
+                let tpl = await import(`../components/${value.path}`);
                 let compileHtml = await tpl.default(value.props);
 
                 await helper.getElement(key).html(compileHtml);

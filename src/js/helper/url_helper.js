@@ -1,16 +1,3 @@
-export function getUrlFragment(path = null) {
-    let fragment;
-
-    path = path === null ? location.pathname : path;
-
-    fragment = clearUrlSlashes(decodeURI(path));
-    fragment = fragment.replace(/\?(.*)$/, '');
-    fragment = fragment === '' ? '/' : fragment;
-    console.log(fragment);
-
-    return fragment;
-}
-
 /**
  * 把前後 slash 清除
  *
@@ -21,12 +8,22 @@ export function clearUrlSlashes(path) {
     return path !== '/' ? path.toString().replace(/\/$/, '') : path;
 }
 
+export function getUrlFragment(path = null) {
+    const newPath = path === null ? window.location.pathname : path;
+
+    let fragment = clearUrlSlashes(decodeURI(newPath));
+    fragment = fragment.replace(/\?(.*)$/, '');
+    fragment = fragment === '' ? '/' : fragment;
+
+    return fragment;
+}
+
 /**
  *
  * @returns {string}
  */
 export function getLocationSearchWithoutQuestionMark() {
-    return location.search.replace('?', '');
+    return window.location.search.replace('?', '');
 }
 
 /**
@@ -38,11 +35,11 @@ export function getLocationSearchWithoutQuestionMark() {
 export function convertAndGetLocationSearchByPlainObject(obj) {
     if (typeof obj !== 'object') return '';
 
-    let search = new URLSearchParams();
+    const search = new URLSearchParams();
 
-    for (let [key, value] of Object.entries(obj)) {
+    for (const [key, value] of Object.entries(obj)) {
         search.append(key, value);
     }
 
-    return '?' + search.toString();
+    return `?${search.toString()}`;
 }

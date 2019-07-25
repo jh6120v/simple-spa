@@ -1,0 +1,15 @@
+{
+  "parser": "babel-eslint",
+  "extends": "airbnb-base",
+  "rules": {
+    "indent": ["error", 4, { "SwitchCase": 1}],
+    "no-console": 0,
+    "no-restricted-syntax": 0,
+    "no-unexpected-multiline": 0,
+    "comma-dangle": 0
+  },
+  "env": {
+    "browser": true,
+    "es6": true
+  }
+}
