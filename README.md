@@ -22,6 +22,7 @@ npm run prod
 #Dependency package
 ```
 babel^7.1
+delegate
 ejs template
 scss
 ```
