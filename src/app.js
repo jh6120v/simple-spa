@@ -1,13 +1,14 @@
-import "@babel/polyfill";
-import {store} from './js/store';
-import {router} from "./js/core/router";
-import {SimpleSpa} from "./js/core/simple-spa";
+import '@babel/polyfill';
+import { store } from './js/store';
+import { router } from './js/core/router';
+import SimpleSpa from './js/core/simple_spa';
+import './sass/style.scss';
 
 try {
     new SimpleSpa(
         store,
         router,
-        'container'
+        'app_container'
     ).$mount('#app');
 } catch (e) {
     console.log(e);

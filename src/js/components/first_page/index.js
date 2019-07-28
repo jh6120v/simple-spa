@@ -6,14 +6,14 @@ export default class Index extends component {
 
         const self = this;
 
-        self.setTemplate('home');
+        self.setTemplate('first_page');
     }
 
     async beforeRender() {
-        console.log('home before render.');
+        console.log('first before render.');
     }
 
     async afterRender() {
-        console.log('home after render.');
+        console.log('first after render.');
     }
 }

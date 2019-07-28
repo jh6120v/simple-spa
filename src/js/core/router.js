@@ -1,6 +1,6 @@
-import {clearUrlSlashes, getUrlFragment} from "../helper/url-helper";
-import {routes} from "./router-config";
-import {store} from "../store";
+import { clearUrlSlashes, getUrlFragment } from '../helper/url_helper';
+import routes from './router_config';
+import { store } from '../store';
 
 class Router {
     options = {
@@ -8,30 +8,32 @@ class Router {
     };
 
     routes = new Map();
-    scope = "Router";
-    referrer_url = null;
+
+    scope = 'Router';
+
+    referrerUrl = null;
 
     constructor(opt = {}) {
-        let _this = this;
+        const self = this;
 
         // merge option
-        _this.options = Object.assign({}, _this.options, opt);
+        self.options = Object.assign({}, self.options, opt);
 
-        for (let route of _this.options.routes.values()) {
-            _this.routes.set(route.path, route);
+        for (const route of self.options.routes.values()) {
+            self.routes.set(route.path, route);
         }
 
-        return _this;
+        return self;
     }
 
     add(route) {
-        let _this = this;
+        const self = this;
         let routeSetting = {
             path: null,
             component: null
         };
 
-        if (typeof route === "object") {
+        if (typeof route === 'object') {
             if (route.path !== null && typeof route.path !== 'string') {
                 throw new Error('route path error.');
             }
@@ -45,66 +47,73 @@ class Router {
             throw new Error('route setting must be set.');
         }
 
-        _this.routes.set(routeSetting.path, routeSetting);
+        self.routes.set(routeSetting.path, routeSetting);
 
-        return _this;
+        return self;
     }
 
     remove(path) {
-        let _this = this;
+        const self = this;
 
-        _this.routes.delete(path);
+        self.routes.delete(path);
 
-        return _this;
+        return self;
     }
 
     flush() {
-        let _this = this;
+        const self = this;
 
-        _this.routes = new Map();
+        self.routes = new Map();
 
-        return _this;
+        return self;
     }
 
     listen() {
-        let _this = this;
+        const self = this;
 
-        (function (history) {
-            let replaceState = history.replaceState;
-            history.replaceState = function (state) {
-                if (typeof history.onreplacestate === "function") {
-                    history.onreplacestate({referrer: location.pathname, path: state});
+        function func(history) {
+            const { pushState } = history;
+            history.pushState = (...argv) => {
+                if (typeof history.onpushstate === 'function') {
+                    history.onpushstate({
+                        referrer: window.location.pathname,
+                        navigate: argv[2]
+                    });
                 }
                 // whatever else you want to do
                 // console.log(state);
                 // maybe call onhashchange e.handler
-                return replaceState.apply(history, arguments);
-            }
-        })(window.history);
+                return pushState.apply(history, argv);
+            };
+        }
 
-        window.onpopstate = history.onreplacestate = function (e) {
-            let path = getUrlFragment(e.path);
-            if (_this.routes.has(path) && path !== location.pathname) {
-                _this.execute(path, e.referrer);
+        func(window.history);
+
+        window.history.onpushstate = (e) => {
+            console.log(e.navigate, e.state);
+            const path = getUrlFragment(e.state || e.navigate);
+            if (self.routes.has(path)) {
+                self.execute(path, e.referrer);
             }
         };
 
+        window.onpopstate = window.history.onpushstate;
+
         // 第一次執行
-        _this.execute(getUrlFragment());
+        self.execute(getUrlFragment());
     }
 
     execute(path, referrer = null) {
-        let _this = this;
-        console.log(_this.routes.get(path).component);
+        const self = this;
 
-        import(`../components/${_this.routes.get(path).component}`).then(async component => {
+        import(`../components/${self.routes.get(path).component}`).then(async (Component) => {
             if (referrer !== null) {
-                _this.referrer_url = referrer;
+                self.referrerUrl = referrer;
             }
 
-            const App = await new component.default();
+            const App = await new Component.default();
 
-            App.scope = _this.scope;
+            App.scope = self.scope;
 
             await App.process();
 

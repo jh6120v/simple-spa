@@ -1,19 +1,18 @@
 const webpack = require('webpack');
 const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin');
 
 console.log(__dirname);
 
 module.exports = {
     entry: {
-        'b': path.join(__dirname, 'src', 'app')
+        b: path.join(__dirname, 'src', 'app')
     },
     output: {
         path: `${__dirname}/dist`,
-        filename: `assets/js/bundle.[hash].js`,
+        filename: 'assets/js/bundle.[hash].js',
         publicPath: '/'
     },
     module: {
@@ -49,9 +48,9 @@ module.exports = {
                 test: /\.(gif|jpg|png|svg)$/,
                 use: [
                     {
-                        loader: "file-loader",
+                        loader: 'file-loader',
                         options: {
-                            outputPath: `assets/images/`,
+                            outputPath: 'assets/images/',
                             name: '[name].[ext]?[hash]',
                             publicPath: '/assets/images'
                         }
@@ -62,9 +61,9 @@ module.exports = {
                 test: /\.(woff|woff2)(\?[\s\S]+)?$/,
                 use: [
                     {
-                        loader: "file-loader",
+                        loader: 'file-loader',
                         options: {
-                            outputPath: `assets/fonts/`,
+                            outputPath: 'assets/fonts/',
                             name: '[name].[ext]?[hash]',
                             publicPath: '/assets/fonts'
                         }
@@ -75,7 +74,7 @@ module.exports = {
                 test: /\.ejs$/,
                 use: [
                     {
-                        loader: "ejs-webpack-loader",
+                        loader: 'ejs-webpack-loader',
                         options: {
                             outputFunctionName: 'echo',
                             beautify: true
@@ -95,12 +94,12 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             template: `${__dirname}/index.html`,
-            filename: `index.html`,
+            filename: 'index.html',
             inject: 'body',
             chunksSortMode: 'none'
         }),
         new MiniCssExtractPlugin({
-            filename: "assets/css/[chunkhash].css",
+            filename: 'assets/css/[chunkhash].css',
             publicPath: '/'
         })
     ],
@@ -112,14 +111,14 @@ module.exports = {
     },
     optimization: {
         runtimeChunk: {
-            name: "m"
+            name: 'm'
         },
         splitChunks: {
             cacheGroups: {
                 commons: {
                     test: /[\\/]node_modules[\\/]/,
-                    name: "v",
-                    chunks: "all"
+                    name: 'v',
+                    chunks: 'all'
                 }
             }
         }

@@ -1,70 +1,67 @@
-import helper from "../helper/dom-helper";
+import helper from '../helper/dom_helper';
 
-export class SimpleSpa {
+export default class SimpleSpa {
     // 目標元素
     $el;
+
     store;
+
     router;
+
     wrapper;
 
     constructor(store, router, wrapper) {
-        let _this = this;
-
         // 共享狀態
-        _this.store = store;
+        this.store = store;
 
         // 路由
-        _this.router = router;
+        this.router = router;
 
         // 包裝組件
-        _this.wrapper = wrapper;
+        this.wrapper = wrapper;
 
         // 設定共用
-        _this.setCommon();
+        this.setCommon();
 
-        return _this;
+        return this;
     }
 
     checkRouteScope() {
-        let _this = this;
-
-        if (helper.getElement(_this.$el).find(_this.router.scope).get().length === 0) {
+        if (helper.getElement(this.$el).find(this.router.scope).get().length === 0) {
             throw new Error('can not find route scope.');
         }
     }
 
     $mount(el) {
-        let _this = this;
+        const self = this;
 
         // 目標元素
-        _this.$el = el;
+        self.$el = el;
 
         // 首次渲染
-        _this.firstRender().then(async () => {
-            await _this.checkRouteScope();
-            await _this.router.listen();
-            await _this.complete();
+        self.firstRender().then(async () => {
+            await self.checkRouteScope();
+            await self.router.listen();
+            await self.complete();
         }).catch((e) => {
             console.log('mount error.');
             console.log(e);
 
-            _this.complete().then(() => {
+            self.complete().then(() => {
 
             });
         });
     }
 
     async firstRender() {
-        let _this = this;
-
-        if (!_this.wrapper) {
+        if (!this.wrapper) {
             throw new Error('component not set.');
         }
 
-        let component = await import(`../components/${_this.wrapper}`);
+        const component = await import(`../components/${this.wrapper}`);
         const App = await new component.default();
 
-        App.scope = await _this.$el;
+        App.scope = await this.$el;
 
         await App.process();
     }

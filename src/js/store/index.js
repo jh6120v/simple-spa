@@ -1,4 +1,4 @@
-export function ConfigureStore(initialState = {}) {
+export function configureStore(initialState = {}) {
     return Object.assign({}, {
         proxy: {}
     }, initialState);
@@ -6,7 +6,7 @@ export function ConfigureStore(initialState = {}) {
 
 export function createProxyState(state, callback) {
     return new Proxy(state, {
-        get(target, property, value) {
+        get(target, property) {
             return target[property];
         },
         set(target, property, value) {
@@ -19,6 +19,6 @@ export function createProxyState(state, callback) {
     });
 }
 
-export const store = ConfigureStore({
+export const store = configureStore({
     first_render: true
 });

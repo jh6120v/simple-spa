@@ -1,18 +1,18 @@
-import helper from "../helper/dom-helper";
-import {store} from "../store";
+import helper from '../helper/dom_helper';
+import { store } from '../store';
 
 export default class Component {
     // 模板
-    template = "";
+    template = '';
 
     // 作用區域
     scope;
 
     // 是否渲染畫面
-    disable_render = false;
+    disableRender = false;
 
     // 是否自動渲染至選定的scope
-    auto_render = true;
+    autoRender = true;
 
     // 欲渲染的資料
     data = {};
@@ -21,12 +21,12 @@ export default class Component {
     output = '';
 
     async process() {
-        let _this = this;
+        const self = this;
 
         try {
-            await _this.beforeRender();
-            await _this.render();
-            await _this.afterRender();
+            await self.beforeRender();
+            await self.render();
+            await self.afterRender();
         } catch (e) {
             console.log(e);
         }
@@ -37,28 +37,35 @@ export default class Component {
     }
 
     async render() {
-        let _this = this;
+        const self = this;
 
         console.log('render');
 
-        if (_this.disable_render === false) {
+        if (self.disableRender === false) {
             // prop public store in to template
-            _this.data = Object.assign({}, _this.data, {
-                store: store
+            self.data = Object.assign({}, self.data, {
+                store
             });
 
             // process component template
-            _this.compiledTemplate = await import(`../templates/${_this.template}.ejs`);
-            _this.output = await _this.compiledTemplate.default(_this.data);
+            self.compiledTemplate = await import(`../templates/${self.template}.ejs`);
+            self.output = await self.compiledTemplate.default(self.data);
 
-            if (_this.auto_render && _this.scope) {
-                await helper.getElement(_this.scope).html(_this.output);
+            if (self.autoRender && self.scope) {
+                await helper.getElement(self.scope)
+                    .html(self.output);
             }
         }
     }
 
     async afterRender() {
         console.log('after render.');
+    }
+
+    setTemplate(template) {
+        const self = this;
+
+        self.template = template;
     }
 }
 
@@ -79,34 +86,34 @@ export default class Component {
      * }
  */
 export const partialComponent = async (componentConfig) => {
-    let partial = {};
+    const partial = {};
 
-    for (let [key, value] of Object.entries(componentConfig)) {
-        let path, props;
+    for (const [key, value] of Object.entries(componentConfig)) {
+        let newPath;
+        let newProps;
 
         if (typeof value === 'string') {
-            path = value;
-            props = {};
+            newPath = value;
+            newProps = {};
         } else {
             if (typeof value.path === 'undefined' || typeof value.props === 'undefined') {
                 throw new Error('path or props not set.');
             }
 
-            path = value.path;
-            props = value.props;
+            newPath = value.path;
 
             // prop store in to template
-            props = Object.assign({}, props, {
-                store: store
+            newProps = Object.assign({}, value.props, {
+                store
             });
         }
 
-        let tpl = await import(`../component/${path}`);
-
-        partial[key] = await tpl.default(props);
+        partial[key] = import(`../components/${newPath}`).default(newProps);
     }
 
-    return await partial;
+    const result = await Promise.all(partial);
+
+    return result;
 };
 
 /**
@@ -126,29 +133,26 @@ export const partialComponent = async (componentConfig) => {
  * @param componentConfig
  */
 export const appendComponent = async (componentConfig) => {
-    let array = [];
+    const result = [];
+    const func = async (elem, path, props) => {
+        if (helper.getElement(elem).get().length > 0) {
+            // prop store in to template
+            const newProps = Object.assign({}, props, {
+                store
+            });
 
-    for (let [key, value] of Object.entries(componentConfig)) {
+            const compileHtml = await import(`../components/${path}`).default(newProps);
+            await helper.getElement(elem).html(compileHtml);
+        }
+    };
+
+    for (const [key, value] of Object.entries(componentConfig)) {
         if (typeof value.path === 'undefined' || typeof value.props === 'undefined') {
             throw new Error('path or props not set.');
         }
 
-        let func = async () => {
-            if (helper.getElement(key).get().length > 0) {
-                // prop store in to template
-                value.props = Object.assign({}, value.props, {
-                    store: store
-                });
-
-                let tpl = await import(`../components/${value.path}`);
-                let compileHtml = await tpl.default(value.props);
-
-                await helper.getElement(key).html(compileHtml);
-            }
-        };
-
-        array.push(func());
+        result.push(func(key, value.path, value.props));
     }
 
-    await Promise.all(array);
+    await Promise.all(result);
 };
