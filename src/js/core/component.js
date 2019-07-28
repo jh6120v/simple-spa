@@ -52,8 +52,7 @@ export default class Component {
             self.output = await self.compiledTemplate.default(self.data);
 
             if (self.autoRender && self.scope) {
-                await helper.getElement(self.scope)
-                    .html(self.output);
+                await helper.getElement(self.scope).html(self.output);
             }
         }
     }
@@ -63,9 +62,7 @@ export default class Component {
     }
 
     setTemplate(template) {
-        const self = this;
-
-        self.template = template;
+        this.template = template;
     }
 }
 

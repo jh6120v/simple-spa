@@ -1,9 +1,11 @@
+// configure your custom store
 export function configureStore(initialState = {}) {
     return Object.assign({}, {
         proxy: {}
     }, initialState);
 }
 
+// use proxy
 export function createProxyState(state, callback) {
     return new Proxy(state, {
         get(target, property) {
@@ -19,6 +21,4 @@ export function createProxyState(state, callback) {
     });
 }
 
-export const store = configureStore({
-    first_render: true
-});
+export const store = configureStore();

@@ -1,6 +1,7 @@
 import { clearUrlSlashes, getUrlFragment } from '../helper/url_helper';
 import routes from './router_config';
 import { store } from '../store';
+import helper from '../helper/dom_helper';
 
 class Router {
     options = {
@@ -27,7 +28,6 @@ class Router {
     }
 
     add(route) {
-        const self = this;
         let routeSetting = {
             path: null,
             component: null
@@ -47,25 +47,21 @@ class Router {
             throw new Error('route setting must be set.');
         }
 
-        self.routes.set(routeSetting.path, routeSetting);
+        this.routes.set(routeSetting.path, routeSetting);
 
-        return self;
+        return this;
     }
 
     remove(path) {
-        const self = this;
+        this.routes.delete(path);
 
-        self.routes.delete(path);
-
-        return self;
+        return this;
     }
 
     flush() {
-        const self = this;
+        this.routes = new Map();
 
-        self.routes = new Map();
-
-        return self;
+        return this;
     }
 
     listen() {
@@ -99,6 +95,8 @@ class Router {
 
         window.onpopstate = window.history.onpushstate;
 
+        this.navigateLinkSetting();
+
         // 第一次執行
         self.execute(getUrlFragment());
     }
@@ -118,6 +116,24 @@ class Router {
             await App.process();
 
             store.first_render = await false;
+        });
+    }
+
+    navigateLinkSetting() {
+        import('delegate').then((Delegate) => {
+            const d = new Delegate.default('#app', '.nav', 'click', ((e) => {
+                e.preventDefault();
+
+                const url = helper.getElement(e.delegateTarget)
+                    .data('href');
+                if (url) {
+                    navigate(url);
+                } else {
+                    window.location.href = e.delegateTarget.href;
+                }
+            }));
+
+            return d;
         });
     }
 }
