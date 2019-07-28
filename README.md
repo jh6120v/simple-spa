@@ -1,5 +1,6 @@
 # simple-spa
 A simple native javascript spa framework
+use eslint Airbnb config base to check code style
 
 #Installing
 ```
