@@ -1,14 +1,17 @@
-# simple-spa
+# Simple-spa
 A simple native javascript spa framework
 
 use eslint Airbnb config base to check code style
 
-#Installing
+### Demo
+https://simple-spa.dailyofjames.com/
+
+### Installing
 ```
 npm install
 ```
 
-#Usage
+### Usage
 Dev mode, use webpack-dev-server to run 
 ```
 npm run dev
@@ -18,7 +21,7 @@ Production mode
 npm run prod
 ```
 
-#Example
+### Example
 configure custom store, path: ./src/store/index.js 
 ```
 export const store = configureStore({
@@ -68,7 +71,7 @@ try {
 }
 ```
 
-#Dependency package
+### Dependency package
 ```
 babel^7.1
 delegate
