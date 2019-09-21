@@ -2,7 +2,7 @@ import '@babel/polyfill';
 import { store } from './js/store';
 import { router } from './js/core/router';
 import SimpleSpa from './js/core/simple_spa';
-import './sass/style.scss';
+import './assets/sass/style.scss';
 
 try {
     new SimpleSpa(
