@@ -104,6 +104,12 @@ class Router {
     execute(path, referrer = null) {
         const self = this;
 
+        if (typeof self.routes.get(path).navigate !== 'undefined') {
+            navigate(self.routes.get(path).navigate);
+
+            return;
+        }
+
         import(`../components/${self.routes.get(path).component}`).then(async (Component) => {
             if (referrer !== null) {
                 self.referrerUrl = referrer;

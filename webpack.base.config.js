@@ -1,6 +1,5 @@
-const webpack = require('webpack');
 const path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -58,19 +57,6 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(woff|woff2)(\?[\s\S]+)?$/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            outputPath: 'assets/fonts/',
-                            name: '[name].[ext]?[hash]',
-                            publicPath: '/assets/fonts'
-                        }
-                    }
-                ]
-            },
-            {
                 test: /\.ejs$/,
                 use: [
                     {
@@ -85,12 +71,9 @@ module.exports = {
         ]
     },
     plugins: [
-        new webpack.optimize.ModuleConcatenationPlugin(),
-        new CleanWebpackPlugin([
-            `${__dirname}/dist/assets/css/*.css`,
-            `${__dirname}/dist/assets/js/*.js`
-        ], {
-            allowExternal: true
+        new CleanWebpackPlugin({
+            cleanOnceBeforeBuildPatterns: [`${__dirname}/dist`],
+            verbose: true,
         }),
         new HtmlWebpackPlugin({
             template: `${__dirname}/index.html`,
@@ -108,6 +91,9 @@ module.exports = {
         modules: [
             path.resolve('./node_modules')
         ]
+    },
+    performance: {
+        hints: false
     },
     optimization: {
         runtimeChunk: {

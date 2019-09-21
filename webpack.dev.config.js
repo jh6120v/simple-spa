@@ -1,5 +1,5 @@
 const merge = require('webpack-merge');
-const config = require("./webpack.base.config.js");
+const config = require('./webpack.base.config.js');
 
 module.exports = merge(config, {
     // devServer 則是 webpack-dev-server 設定

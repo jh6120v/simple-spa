@@ -7,38 +7,38 @@ export default class Index extends component {
 
         const self = this;
 
-        self.setTemplate('home');
+        self.setTemplate('third_page');
     }
 
     async beforeRender() {
-        console.log('home before render.');
+        console.log('third before render.');
     }
 
     async afterRender() {
-        console.log('home after render.');
+        console.log('third after render.');
         let message;
 
         if (window.localStorage) {
-            message = localStorage.getItem('message-1') || '真的好棒棒啊！';
+            message = localStorage.getItem('message-3') || '給我錢錢！！';
         } else {
-            message = '真的好棒棒啊！';
+            message = '給我錢錢！！';
         }
 
         inputTowWayBinding(document.querySelector('.dialog-input'), (value) => {
             let text;
             if (typeof value === 'undefined' || value === '') {
-                text = '真的好棒棒啊！';
+                text = '給我錢錢！！';
             } else {
                 text = value;
             }
 
             if (window.localStorage) {
-                localStorage.setItem('message-1', value);
+                localStorage.setItem('message-3', value);
             }
 
             document.querySelector('.dialog').innerText = text;
         }, message);
 
-        htmlToCanvas(document.querySelector('.show-img-1'), 'BugCat');
+        htmlToCanvas(document.querySelector('.show-img-3'), 'BugCat');
     }
 }

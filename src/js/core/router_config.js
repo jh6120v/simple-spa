@@ -5,11 +5,11 @@ const routes = [
     },
     {
         path: '/first',
-        component: 'first_page'
+        component: 'second_page'
     },
     {
         path: '/second',
-        component: 'second_page'
+        component: 'third_page'
     }
 ];
 
