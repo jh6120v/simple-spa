@@ -1,6 +1,6 @@
 ![image](https://github.com/jh6120v/simple-spa/blob/master/cover.png)
 
-# Simple-spa
+# Simple SPA
 A simple native javascript spa framework
 
 use eslint Airbnb config base to check code style
