@@ -1,3 +1,5 @@
+![image](https://github.com/jh6120v/simple-spa/blob/master/cover.png)
+
 # Simple-spa
 A simple native javascript spa framework
 
