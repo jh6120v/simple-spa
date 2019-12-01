@@ -6,7 +6,8 @@ A simple native javascript spa framework
 use eslint Airbnb config base to check code style
 
 ### Demo
-https://simple-spa.dailyofjames.com/
+- https://simple-spa-ad60d.firebaseapp.com/
+- https://simple-spa.dailyofjames.com/
 
 ### Installing
 ```

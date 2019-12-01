@@ -1,11 +1,11 @@
 {
   "name": "simple-spa",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "simple spa use native script",
   "main": "app.js",
   "scripts": {
     "prod": "webpack --config webpack.prod.config.js",
-    "dev": "webpack-dev-server --devtool eval --progress --colors --hot --content-base build --historyApiFallback --config webpack.dev.config.js"
+    "start": "webpack-dev-server --devtool eval --progress --colors --hot --content-base build --historyApiFallback --config webpack.dev.config.js"
   },
   "keywords": [],
   "author": "",
