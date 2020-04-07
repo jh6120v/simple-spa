@@ -1,24 +1,26 @@
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const merge = require('webpack-merge');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const config = require('./webpack.base.config.js');
 
 module.exports = merge(config, {
     optimization: {
+        minimize: true,
         minimizer: [
-            new UglifyJsPlugin({
-                uglifyOptions: {
+            new TerserPlugin({
+                test: /\.js(\?.*)?$/i,
+                extractComments: false,
+                terserOptions: {
+                    warnings: false,
                     compress: {
-                        warnings: false,
                         drop_console: true
                     },
                     output: {
-                        // 清除註解
-                        comments: false,
+                        comments: false
                     }
                 }
-            })
+            }),
         ]
     },
     plugins: [
